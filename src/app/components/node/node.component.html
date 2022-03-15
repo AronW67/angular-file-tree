@@ -5,7 +5,7 @@
                 <img [src]="nodeData.type == 'folder' ? folderImgPath : fileImgPath" alt="{{nodeData.type}} icon" [ngClass]="nodeData.type" />
                 {{nodeData.name}}
                 <div class="node-button-container" *ngIf="!selectFileTypeDisplay && !enterItemNameDisplay">
-                    <button aria-label="Add child item" (click)="addChildNode()">+</button>
+                    <button aria-label="Add child item" (click)="addChildNode()" *ngIf="nodeData.type == 'folder'">+</button>
                     <button aria-label="Delete this item" (click)="deleteNode()">-</button>
                 </div>
             </div>
