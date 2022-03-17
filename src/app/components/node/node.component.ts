@@ -18,7 +18,7 @@ export class NodeComponent implements OnInit {
 
   public enterItemNameDisplay:boolean = false;
 
-  public fileNameInput?:string;
+  public fileNameInput:string = '';
 
   @Input() public nodeData?:NodeModel;
 
@@ -32,12 +32,11 @@ export class NodeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.nodeData);
   }
 
   // Function to start process of adding node
   addNode(): void {
-    console.log('Adding child node');
+    console.log('Adding node');
     this.nodeData?.children?.push(new NodeModel(null, '', [], Date.now().toString(), false));
   }
 
@@ -48,18 +47,13 @@ export class NodeComponent implements OnInit {
 
   // Function to save node data to nodeModel.children
   saveNode(): void {
-    if (this.fileNameInput !== '' && this.nodeData !== undefined) {
-      this.nodeData.name = this.fileNameInput;
+    if (this.fileNameInput !== '') {
+      if (this.nodeData !== undefined) {
+        this.nodeData.name = this.fileNameInput;
+      }
     } else {
       this.deleteNode();
     }
-  }
-
-  // Stop adding a node and reset values
-  closeAdd(): void {
-    this.selectedType = null;
-    this.selectFileTypeDisplay = false;
-    this.enterItemNameDisplay = false;
   }
 
   // Remove node from tree

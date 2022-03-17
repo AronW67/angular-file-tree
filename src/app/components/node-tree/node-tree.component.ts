@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NodeModel } from 'src/app/models/node.model';
+import { NodeDataService } from 'src/app/services/node-data.service';
 
 @Component({
   selector: 'app-node-tree',
@@ -7,65 +8,22 @@ import { NodeModel } from 'src/app/models/node.model';
   styleUrls: ['./node-tree.component.scss']
 })
 export class NodeTreeComponent implements OnInit {
-
-  // Empty nodeListData object if you want to start with an empty array
-  //public nodeListData:NodeModel[]; 
   
-  // Sample nodeListData data 
-  public nodeListData:NodeModel[] = [{
-    type: 'folder',
-    name: 'Root node',
-    children: [{
-      type: 'file',
-      name: 'Text.txt',
-      children: [],
-      id: '1647330126328',
-      rootNode: false
-    },
-    {
-      type: 'file',
-      name: 'Another Text File.txt',
-      children: [],
-      id: '1647330126329',
-      rootNode: false
-    },
-    {
-      type: 'file',
-      name: 'I Like Dogs.docx',
-      children: [],
-      id: '1647330126330',
-      rootNode: false
-    },
-    {
-      type: 'folder',
-      name: 'images',
-      children: [],
-      id: '1647330126340',
-      rootNode: false
-    }],
-    id: '1647330128375',
-    rootNode: true
-  }]; 
+  public nodeListData:NodeModel[] = [];
 
   public enterItemNameDisplay:boolean = false;
 
-  public fileNameInput?: string;
-
-  constructor() { }
+  constructor(public _nodeDataService:NodeDataService) { 
+  }
 
   ngOnInit(): void {
-    console.log(this.nodeListData);
+    this.nodeListData = this._nodeDataService.getNodeData();
   }
 
   // Function to start process of adding root node
   addRootNode(): void {
-    console.log('Adding child node');
+    console.log('Adding root node');
     this.nodeListData.push(new NodeModel('folder', '', [], Date.now().toString(), true));
-  }
-
-  // Stop adding a node and reset values
-  closeAdd(): void {
-    this.enterItemNameDisplay = false;
   }
 
   // Function to delete node from nodeListData
