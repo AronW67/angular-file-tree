@@ -12,12 +12,12 @@
                 <input type="text" name="name-input" id="name-input" aria-label="Enter file or folder name" [(ngModel)]="fileNameInput"/> 
                 <button (click)="saveNode()">&check;</button>
                 <button (click)="deleteNode()">&cross;</button> 
-                {{fileNameInput}}
             </div>
         </div>
         <div class="node-content-wrap" *ngIf="nodeData.name !== '' && nodeData.type !== null">
             <div class="node-content" tabindex="0">
                 <img [src]="nodeData.type == 'folder' ? folderImgPath : fileImgPath" alt="{{nodeData.type}} icon" [ngClass]="nodeData.type" />
+                {{nodeData.name}}
                 <div class="node-button-container" *ngIf="!selectFileTypeDisplay && !enterItemNameDisplay">
                     <button aria-label="Add child item" (click)="addNode()" *ngIf="nodeData.type == 'folder'">+</button>
                     <button aria-label="Delete this item" (click)="deleteNode()">-</button>
