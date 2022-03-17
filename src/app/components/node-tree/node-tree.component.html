@@ -1,18 +1,9 @@
 <section class="tree-container">
     <div class="add-root-container">
-        <!-- Only display if no root exists -->
         <button class="add-root-btn" aria-label="Click to add root folder" (click)="addRootNode()">Add Root Folder</button>
-        <div class="name-input-wrap" *ngIf="enterItemNameDisplay">
-            <div class="name-input-container" > 
-                <label for="name-input">Enter name: </label>
-                <input type="text" name="name-input" id="name-input" aria-label="Enter root folder name" #rootfilenameinput/> 
-                <button (click)="saveRootNode(rootfilenameinput.value)" aria-label="Add root folder">&check;</button>
-                <button (click)="closeAdd()" aria-label="Cancel adding root folder">&cross;</button> 
-            </div>
-        </div>
     </div>
     <div class="tree" *ngIf="nodeListData?.length">
-        <app-node  *ngFor="let node of nodeListData" [nodeData]="node" [rootNode]="true" (emitDeleteRootNode)="deleteNode($event)"></app-node>
+        <app-node *ngFor="let node of nodeListData" [nodeData]="node" [rootNode]="true" (emitDeleteRootNode)="deleteNode($event)"></app-node>
     </div>
 </section>
 <section class="data-display">

@@ -14,44 +14,44 @@ export class NodeComponent implements OnInit {
   
   public selectFileTypeDisplay:boolean = false;
 
-  public selectedType:'folder' | 'file' | 'unset' | null;
+  public selectedType:'folder' | 'file' | 'unset' | null = null;
 
   public enterItemNameDisplay:boolean = false;
 
-  @Input() public nodeData:NodeModel;
+  public fileNameInput?:string;
 
-  @Input() public rootNode:boolean;
+  @Input() public nodeData?:NodeModel;
+
+  @Input() public rootNode?:boolean;
 
   @Output() public emitDeleteRootNode = new EventEmitter<string>();
 
   @Output() public emitDeleteNode = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    console.log(this.nodeData);
   }
 
   // Function to start process of adding node
-  addChildNode(): void {
+  addNode(): void {
     console.log('Adding child node');
-    this.selectFileTypeDisplay = true;
+    this.nodeData?.children?.push(new NodeModel(null, '', [], Date.now().toString(), false));
   }
 
   // Function to set selected file type
   setSelectedFileType(type:'folder' | 'file' | 'unset' | null): void {
-    this.selectedType = type;
-    this.selectFileTypeDisplay = false;
-    this.enterItemNameDisplay = true;
+    if (this.nodeData !== undefined) this.nodeData.type = type;
   }
 
   // Function to save node data to nodeModel.children
-  saveNode(fileName: string): void {
-    if (fileName == '') {
-      this.closeAdd();
+  saveNode(): void {
+    if (this.fileNameInput !== '' && this.nodeData !== undefined) {
+      this.nodeData.name = this.fileNameInput;
     } else {
-      let newNode = new NodeModel(this.selectedType, fileName, [], Date.now().toString());
-      this.nodeData.children.push(newNode);
-      this.closeAdd();
+      this.deleteNode();
     }
   }
 
@@ -65,17 +65,17 @@ export class NodeComponent implements OnInit {
   // Remove node from tree
   deleteNode(): void {
     if (this.rootNode) {
-      console.log('Deleting node id: ' + this.nodeData.id);
-      this.emitDeleteRootNode.emit(this.nodeData.id);
+      console.log('Deleting node id: ' + this.nodeData?.id);
+      this.emitDeleteRootNode.emit(this.nodeData?.id);
     } else {
-      this.emitDeleteNode.emit(this.nodeData.id);
+      this.emitDeleteNode.emit(this.nodeData?.id);
     }
   }
 
   deleteChildNode(value:string): void {
-    this.nodeData.children.forEach((node, index) => {
+    this.nodeData?.children?.forEach((node, index) => {
       if (node.id == value) {
-        this.nodeData.children.splice(index, index);
+        this.nodeData?.children?.splice(index, 1);
       }
     })
   }

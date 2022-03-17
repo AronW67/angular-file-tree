@@ -1,27 +1,27 @@
 <ul class="node-item" *ngIf="nodeData">
     <li>
-        <div class="node-content-wrap">
-            <div class="node-content" tabindex="0">
-                <img [src]="nodeData.type == 'folder' ? folderImgPath : fileImgPath" alt="{{nodeData.type}} icon" [ngClass]="nodeData.type" />
-                {{nodeData.name}}
-                <div class="node-button-container" *ngIf="!selectFileTypeDisplay && !enterItemNameDisplay">
-                    <button aria-label="Add child item" (click)="addChildNode()" *ngIf="nodeData.type == 'folder'">+</button>
-                    <button aria-label="Delete this item" (click)="deleteNode()">-</button>
-                </div>
-            </div>
-        </div>
-        <div class="type-select-wrap">
-            <div class="type-select-container" aria-label="Select to add folder or file" *ngIf="selectFileTypeDisplay && !enterItemNameDisplay">
+        <div class="type-select-wrap" *ngIf="nodeData.type === null">
+            <div class="type-select-container" aria-label="Select to add folder or file">
                 <button aria-label="Add folder" name="type-input" (click)="setSelectedFileType('folder')">Folder</button> 
                 <button aria-label="Add file" name="type-input" (click)="setSelectedFileType('file')">File</button>
             </div>
         </div>
-        <div class="name-input-wrap">
-            <div class="name-input-container" *ngIf="!selectFileTypeDisplay && enterItemNameDisplay"> 
+        <div class="name-input-wrap" *ngIf="nodeData.name === '' && nodeData.type !== null">
+            <div class="name-input-container"> 
                 <label for="name-input">Enter name: </label>
-                <input type="text" name="name-input" id="name-input" aria-label="Enter file or folder name" #filenameinput/> 
-                <button (click)="saveNode(filenameinput.value)">&check;</button>
-                <button (click)="closeAdd()">&cross;</button> 
+                <input type="text" name="name-input" id="name-input" aria-label="Enter file or folder name" [(ngModel)]="fileNameInput"/> 
+                <button (click)="saveNode(fileNameInput)">&check;</button>
+                <button (click)="deleteNode()">&cross;</button> 
+            </div>
+        </div>
+        <div class="node-content-wrap" *ngIf="nodeData.name !== '' && nodeData.type !== null">
+            <div class="node-content" tabindex="0">
+                <img [src]="nodeData.type == 'folder' ? folderImgPath : fileImgPath" alt="{{nodeData.type}} icon" [ngClass]="nodeData.type" />
+                {{nodeData.name}}
+                <div class="node-button-container" *ngIf="!selectFileTypeDisplay && !enterItemNameDisplay">
+                    <button aria-label="Add child item" (click)="addNode()" *ngIf="nodeData.type == 'folder'">+</button>
+                    <button aria-label="Delete this item" (click)="deleteNode()">-</button>
+                </div>
             </div>
         </div>
         <app-node *ngFor="let node of nodeData.children" [nodeData]="node" [rootNode]="false" (emitDeleteNode)="deleteChildNode($event)"></app-node>

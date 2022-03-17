@@ -19,30 +19,37 @@ export class NodeTreeComponent implements OnInit {
       type: 'file',
       name: 'Text.txt',
       children: [],
-      id: '1647330126328'
+      id: '1647330126328',
+      rootNode: false
     },
     {
       type: 'file',
       name: 'Another Text File.txt',
       children: [],
-      id: '1647330126329'
+      id: '1647330126329',
+      rootNode: false
     },
     {
       type: 'file',
       name: 'I Like Dogs.docx',
       children: [],
-      id: '1647330126330'
+      id: '1647330126330',
+      rootNode: false
     },
     {
       type: 'folder',
       name: 'images',
       children: [],
-      id: '1647330126340'
+      id: '1647330126340',
+      rootNode: false
     }],
-    id: Date.now().toString()
+    id: '1647330128375',
+    rootNode: true
   }]; 
 
   public enterItemNameDisplay:boolean = false;
+
+  public fileNameInput?: string;
 
   constructor() { }
 
@@ -53,14 +60,7 @@ export class NodeTreeComponent implements OnInit {
   // Function to start process of adding root node
   addRootNode(): void {
     console.log('Adding child node');
-    this.enterItemNameDisplay = true;
-  }
-
-  // Function to save root node
-  saveRootNode(fileName: string): void {
-    let newNode = new NodeModel('folder', fileName, [], Date.now().toString());
-    this.nodeListData.push(newNode);
-    this.closeAdd();
+    this.nodeListData.push(new NodeModel('folder', '', [], Date.now().toString(), true));
   }
 
   // Stop adding a node and reset values
@@ -72,7 +72,7 @@ export class NodeTreeComponent implements OnInit {
   deleteNode(value:string): void {
     this.nodeListData.forEach((node, index) => {
       if (node.id == value) {
-        this.nodeListData.splice(index, index);
+        this.nodeListData.splice(index, 1);
       }
     })
   }
